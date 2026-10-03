@@ -1,0 +1,178 @@
+<% layout("/layouts/boilerplate") -%>
+
+<section class="profile-page">
+    <div class="profile-home">
+        <a href="/post">← Browse posts</a>
+    </div>
+
+    <div class="profile-hero">
+        <div class="row align-items-center g-4">
+            <div class="col-md-4 text-center">
+                <div class="profile-image-wrap">
+                    <img src="<%= User.ProfilePic %>" alt="Profile Picture" class="profile-image">
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card profile-info-card">
+                    <div class="card-body">
+                        <h1 class="profile-name"><%= User.Name %></h1>
+                        <div class="profile-role"><%= User.Proffetion || "RentMate member" %></div>
+
+                        <div class="profile-detail-list">
+                            <div class="profile-detail">
+                                <span class="profile-detail-label">Email</span>
+                                <span class="profile-detail-value"><%= User.Email %></span>
+                            </div>
+
+                            <div class="profile-detail">
+                                <span class="profile-detail-label">Contact</span>
+                                <span class="profile-detail-value"><%= User.ContactNumber %></span>
+                            </div>
+                        </div>
+
+                        <p class="profile-about">
+                            <strong>About</strong><br>
+                            <%= User.About || "Not provided" %>
+                        </p>
+
+                        <a href="/Profile/edit" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-add-post">
+        <div>
+            <h2 class="profile-add-post-title">Have a place to share?</h2>
+            <p class="profile-add-post-subtitle">Create a post and let people discover your rental.</p>
+        </div>
+        <a href="/post/new" class="btn btn-success">+ Add Post</a>
+    </div>
+
+    <div class="my-posts-title-wrap">
+        <div>
+            <h2 class="my-posts-title mb-1">My Posts</h2>
+            <div class="my-posts-subtitle">Manage the rental posts you have published.</div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-1">
+        <% if (allPosts.length === 0) { %>
+            <div class="col-12 text-center py-5">
+                <h3>No posts yet</h3>
+                <p class="text-secondary">
+                    You haven't created any posts yet.
+                </p>
+                <a href="/post/new" class="btn btn-primary">
+                    Add Your First Post
+                </a>
+            </div>
+        <% } %>
+        <% for(let post of allPosts) { %>
+            <div class="col-sm-6 col-lg-4">
+                <article class="card post-card">
+                    <div id="carousel-<%= post._id %>" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <% post.images.forEach((image, index) => { %>
+                                <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                                    <img src="<%= image.url %>" class="d-block w-100 post-card-image" alt="Post image">
+                                </div>
+                            <% }) %>
+                        </div>
+
+                        <% if (post.images.length > 1) { %>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= post._id %>" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= post._id %>" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        <% } %>
+                    </div>
+
+                    <div class="card-body">
+                        <span class="rm-property-type"><%= post.PostType %></span>
+                        <h5 class="card-title"><%= post.Location.adress %></h5>
+                        <div class="rm-price mb-3">₹<%= post.Rent %> <span class="fw-normal text-secondary">/ month</span></div>
+
+                        <div class="post-actions">
+                            <a href="/post/<%= post._id %>?back=/Profile" class="btn btn-outline-primary">
+                                View
+                            </a>
+                            <a href="/post/<%= post._id %>/edit" class="btn btn-dark">
+                                Edit
+                            </a>
+                            <form method="POST" action="/post/<%= post._id %>?_method=DELETE" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        <% } %>
+    </div>
+
+    <hr class="my-5">
+
+    <div class="my-posts-title-wrap">
+        <div>
+            <h2 class="my-posts-title mb-1">⭐ My Favorites</h2>
+            <div class="my-posts-subtitle">
+                Posts you have saved for later.
+            </div>
+        </div>
+    </div>
+    <div class="row g-4 mt-1">
+        <% if (User.Favorites.length === 0) { %>
+    
+            <div class="col-12 text-center py-5">
+                <h3>No favorites yet</h3>
+                <p class="text-secondary">
+                    You haven't saved any posts yet.
+                </p>
+                <a href="/post" class="btn btn-primary">
+                    Browse Posts
+                </a>
+            </div>
+    
+        <% } %>
+    
+        <% for (let favorite of User.Favorites) { %>
+    
+            <div class="col-sm-6 col-lg-4">
+                <article class="card post-card">
+    
+                    <div class="card-body">
+                        <span class="rm-property-type">
+                            <%= favorite.PostType %>
+                        </span>
+    
+                        <h5 class="card-title">
+                            <%= favorite.Location.adress %>
+                        </h5>
+    
+                        <div class="rm-price mb-3">
+                            ₹<%= favorite.Rent %>
+                            <span class="fw-normal text-secondary">
+                                / month
+                            </span>
+                        </div>
+    
+                        <div class="post-actions">
+                            <a href="/post/<%= favorite._id %>?back=/Profile"
+                               class="btn btn-outline-primary">
+                                View
+                            </a>
+                        </div>
+    
+                    </div>
+    
+                </article>
+            </div>
+    
+        <% } %>
+    </div>
+    
+</section>

@@ -1,0 +1,113 @@
+<% layout("/layouts/boilerplate") -%>
+
+<section class="post-page">
+    <form class="d-flex post-search" role="search" action="/post" method="GET">
+
+        <input
+            class="form-control"
+            type="search"
+            name="location"
+            placeholder="Search by location..."
+            value="<%= location || '' %>"
+            aria-label="Search"
+        >
+    
+        <select class="form-select" name="type">
+            <option value="" <%= !type ? "selected" : "" %>>All Types</option>
+    
+            <option value="PG" <%= type === "PG" ? "selected" : "" %>>
+                PG
+            </option>
+    
+            <option value="Flat" <%= type === "Flat" ? "selected" : "" %>>
+                Flat
+            </option>
+    
+            <option value="Roommate" <%= type === "Roommate" ? "selected" : "" %>>
+                Roommate
+            </option>
+        </select>
+    
+        <select class="form-select" name="sort">
+            <option value="" <%= !sort ? "selected" : "" %>>
+                Sort By
+            </option>
+    
+            <option value="rent_asc" <%= sort === "rent_asc" ? "selected" : "" %>>
+                Rent: Low to High
+            </option>
+    
+            <option value="rent_desc" <%= sort === "rent_desc" ? "selected" : "" %>>
+                Rent: High to Low
+            </option>
+    
+            <option value="newest" <%= sort === "newest" ? "selected" : "" %>>
+                Newest First
+            </option>
+    
+            <option value="oldest" <%= sort === "oldest" ? "selected" : "" %>>
+                Oldest First
+            </option>
+        </select>
+    
+        <button class="btn btn-primary" type="submit">
+            Search
+        </button>
+        <a href="/post" class="btn btn-outline-secondary">
+            Clear
+        </a>
+    
+    </form>
+</section>
+
+<section class="container pb-4">
+    <div class="row g-4">
+        <% if (allPosts.length === 0) { %>
+
+            <div class="col-12 text-center py-5">
+                <h3>No posts found</h3>
+                <p class="text-secondary">
+                    Try changing your location, type, or sorting option.
+                </p>
+            </div>
+        
+        <% } %>
+        <% for(let post of allPosts) { %>
+            <div class="col-sm-6 col-lg-4">
+                <a href="/post/<%= post._id %>?back=<%= encodeURIComponent(backUrl) %>" class="rm-card-link">
+                    <article class="card post-card">
+                        <div id="carousel-<%= post._id %>" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <% post.images.forEach((image, index) => { %>
+                                    <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                                        <img
+                                            src="<%= image.url %>"
+                                            class="d-block w-100 post-card-image"
+                                            alt="Post image"
+                                        >
+                                    </div>
+                                <% }) %>
+                            </div>
+
+                            <% if (post.images.length > 1) { %>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= post._id %>" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= post._id %>" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </button>
+                            <% } %>
+                        </div>
+
+                        <div class="card-body">
+                            <span class="rm-property-type"><%= post.PostType %></span>
+                            <h5 class="card-title"><%= post.Location.adress %></h5>
+                            <p class="card-text">Comfortable rental option in your preferred location.</p>
+                            <div class="rm-price">₹<%= post.Rent %> <span class="fw-normal text-secondary">/ month</span></div>
+                        </div>
+                    </article>
+                </a>
+            </div>
+        <% } %>
+    </div>
+</section>

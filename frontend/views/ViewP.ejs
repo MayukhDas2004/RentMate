@@ -1,0 +1,133 @@
+<% layout("/layouts/boilerplate") -%>
+
+<section class="post-details">
+    <div class="post-details-heading">
+        <h3>Property details</h3>
+        <p>Review the important information before getting in touch.</p>
+    </div>
+
+    <div class="card">
+        <% if (Showpost.images && Showpost.images.length > 0) { %>
+            <div id="viewPostCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <% Showpost.images.forEach((image, index) => { %>
+                        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                            <img src="<%= image.url %>" class="d-block w-100 post-details-image" alt="Post image">
+                        </div>
+                    <% }) %>
+                </div>
+
+                <% if (Showpost.images.length > 1) { %>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#viewPostCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#viewPostCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                <% } %>
+            </div>
+        <% } else { %>
+            <div class="post-no-image">No image provided</div>
+        <% } %>
+
+        <div class="card-body">
+            <span class="rm-property-type"><%= Showpost.PostType %></span>
+            <h4 class="card-title">₹<%= Showpost.Rent %> <span class="fs-6 fw-normal text-secondary">/ month</span></h4>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>Post Owner</strong>
+                    <span><%= Showpost.owner.Name %></span>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>Location</strong>
+                    <span>
+                        <%= Showpost.Location.adress %>
+                        <% if (Showpost.Location.url) { %>
+                            <a href="<%= Showpost.Location.url %>" target="_blank" class="ms-2">GMap ↗</a>
+                        <% } %>
+                    </span>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>Contact Number</strong>
+                    <span><%= Showpost.contactNumber %>  
+                        <a href="tel:<%= Showpost.contactNumber %>" class="btn btn-outline-success btn-sm">
+                            📞 Call Owner
+                        </a>
+                    </span>
+                </li>
+
+                <% if (Showpost.Email) { %>
+                    <li class="list-group-item">
+                        <strong>Email</strong>
+                        <span><%= Showpost.Email %>
+                            <a href="mailto:<%= Showpost.Email %>" class="btn btn-outline-primary btn-sm">
+                                ✉️ Email Owner
+                            </a>
+                        </span>
+                    </li>
+                <% } %>
+
+                <li class="list-group-item">
+                    <strong>Gender Preference</strong>
+                    <span><%= Showpost.GenderPreferance %></span>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>AC</strong>
+                    <span><%= Showpost.Description && Showpost.Description[0] ? Showpost.Description[0].AC : false %></span>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>Furnishing</strong>
+                    <span><%= Showpost.Description && Showpost.Description[0] ? Showpost.Description[0].Furnishing : false %></span>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>Rules</strong>
+                    <span><%= Showpost.Rules || "No rules provided" %></span>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>Posted On</strong>
+                    <span><%= Showpost.createdAt.toLocaleDateString() %></span>
+                </li>
+            </ul>
+
+            <div class="mt-4">
+                <a href="<%= backUrl %>" class="btn btn-outline-primary">
+                    ← Back
+                </a>
+            
+                <button type="button" class="btn btn-outline-success" id="sharePostBtn">
+                    🔗 Share Post
+                </button>
+                <% if (isFavorite) { %>
+
+                    <form 
+                        action="/post/<%= Showpost._id %>/favorite?_method=DELETE&back=<%= encodeURIComponent(backUrl) %>" 
+                        method="POST" class="d-inline"
+                    >
+                        <button type="submit" class="btn btn-danger">
+                            💛 Remove Favorite
+                        </button>
+                    </form>
+                
+                <% } else { %>
+                
+                    <form 
+                        action="/post/<%= Showpost._id %>/favorite?back=<%= encodeURIComponent(backUrl) %>"
+                        method="POST" class="d-inline"
+                    >
+                        <button type="submit" class="btn btn-warning">
+                            ⭐ Add Favorite
+                        </button>
+                    </form>
+                
+                <% } %>
+            </div>
+        </div>
+    </div>
+</section>

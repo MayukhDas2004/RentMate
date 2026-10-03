@@ -1,0 +1,54 @@
+<% layout("/layouts/boilerplate") -%>
+
+<section class="profile-form">
+    <h2>Edit Profile</h2>
+
+    <form action="/Profile/edit?_method=PUT" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="Name" class="form-label">Name</label>
+            <input type="text" name="Name" id="Name" class="form-control" value="<%= User.Name %>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email</label>
+            <input type="email" name="Email" id="Email" class="form-control" value="<%= User.Email %>" required>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="ContactNumber" class="form-label">Contact Number</label>
+                <input type="text" name="ContactNumber" id="ContactNumber" class="form-control" value="<%= User.ContactNumber %>" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="Gender" class="form-label">Gender</label>
+                <select name="Gender" id="Gender" class="form-select" required>
+                    <option value="Male" <%= User.Gender === "Male" ? "selected" : "" %>>Male</option>
+                    <option value="Female" <%= User.Gender === "Female" ? "selected" : "" %>>Female</option>
+                    <option value="Other" <%= User.Gender === "Other" ? "selected" : "" %>>Other</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3 mt-3">
+            <label for="Proffetion" class="form-label">Profession</label>
+            <input type="text" name="Proffetion" id="Proffetion" class="form-control" value="<%= User.Proffetion || '' %>">
+        </div>
+
+        <div class="mb-3">
+            <label for="About" class="form-label">About</label>
+            <textarea name="About" id="About" class="form-control" rows="4" maxlength="150"><%= User.About || '' %></textarea>
+        </div>
+
+        <div class="mb-4 rm-upload-box">
+            <label for="ProfilePic" class="form-label">Profile Picture</label>
+            <input type="file" name="ProfilePic" id="ProfilePic" class="form-control" accept="image/*">
+            <div class="form-text">Choose a new image only if you want to replace your current profile picture.</div>
+        </div>
+
+        <div class="profile-form-actions">
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+            <a href="/Profile" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</section>
