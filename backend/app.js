@@ -9,6 +9,7 @@ if(process.env.NODE_ENV != "production"){
 
 const express = require("express");
 const app = express();
+app.set("trust proxy", 1);
 const path = require("path");
 const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
