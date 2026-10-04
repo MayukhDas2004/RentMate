@@ -10,6 +10,12 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+transporter.verify((error, success) => {
+    if (error) {
+        console.log("MAILER ERROR:", error);
+    } else {
+        console.log("MAILER READY:", success);
+    }
+});
+
 module.exports = transporter;
-
-
