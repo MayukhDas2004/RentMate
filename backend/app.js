@@ -1,3 +1,12 @@
+const dns = require("dns");
+dns.setServers(["1.1.1.1"]);
+
+
+if(process.env.NODE_ENV != "production"){
+    require('dotenv').config();
+}
+
+
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -17,7 +26,7 @@ const { session, sessionOptions, passport, setCurrentUser } = require("./middlew
 
 
 const mongoose = require("mongoose");
-const MONGO_URL = "mongodb://127.0.0.1:27017/RentMate1";
+const MONGO_URL =process.env.MONGO_URL;
 
 
 
@@ -132,7 +141,6 @@ app.use((req, res) => {
 
 
 //connect to localhost
-const port=3000;
-app.listen(port, ()=>{
-    console.log(`app is listing on ${port}`);
+app.listen(process.env.PORT || 3000, () => {
+    console.log("app is listing on 3000");
 });

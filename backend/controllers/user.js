@@ -63,7 +63,7 @@ module.exports.register = async (req, res) => {
         });
 
         console.log(registeredUser);
-        req.flash("success", "Registration successful! Please login.");
+        req.flash("success", "Registration successful! Please First Verify Your Mail !");
         res.redirect("/login");
 
     }
