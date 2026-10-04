@@ -85,7 +85,7 @@ module.exports.register = async (req, res) => {
 
         const { data, error: resendError } = await transporter.emails.send({
             from: "onboarding@resend.dev",
-            to: Email,,
+            to: Email,
             subject: "Verify your RentMate account",
             text: `Please verify your RentMate account by clicking this link: ${verificationUrl}`
         });
