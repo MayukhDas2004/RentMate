@@ -85,8 +85,8 @@ app.use(methodOverride("_method"));
 
 
 //home 
-app.get("/",(req,res) =>{
-    res.send("Welcome to RentMate Site..");
+app.get("/", (req, res) => {
+    res.redirect("/post");
 });
 
 

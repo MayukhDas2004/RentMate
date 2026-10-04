@@ -1,4 +1,51 @@
+const registerForm = document.getElementById("registerForm");
+
+registerForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    document.querySelectorAll(".is-invalid").forEach(field => {
+        field.classList.remove("is-invalid");
+    });
+    
+    document.querySelectorAll(".invalid-feedback").forEach(error => {
+        error.textContent = "";
+    });
+
+    const formData = new FormData(registerForm);
+
+    const response = await fetch("/register", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json"
+        },
+        body: new URLSearchParams(formData)
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+
+        if (data.field) {
+            const field = document.getElementById(data.field);
+            const errorMessage = document.getElementById(data.field + "Error");
+    
+            if (field && errorMessage) {
+                field.classList.add("is-invalid");
+                errorMessage.textContent = data.message;
+            }
+        } else {
+            alert(data.message);
+        }
+    
+        return;
+    }
+    if (data.success) {
+        window.location.href = data.redirect;
+    }
+});
+
 const sendOtpBtn = document.getElementById("sendOtpBtn");
+
 
 sendOtpBtn.addEventListener("click", async () => {
     const ContactNumber = document.getElementById("ContactNumber").value;
@@ -52,3 +99,27 @@ verifyOtpBtn.addEventListener("click", async () => {
         document.getElementById("registerBtn").disabled = false;
     }
 });
+
+
+document.querySelectorAll("#registerForm input, #registerForm select, #registerForm textarea")
+    .forEach(field => {
+        field.addEventListener("input", () => {
+            field.classList.remove("is-invalid");
+
+            const errorMessage = document.getElementById(field.id + "Error");
+
+            if (errorMessage) {
+                errorMessage.textContent = "";
+            }
+        });
+
+        field.addEventListener("change", () => {
+            field.classList.remove("is-invalid");
+
+            const errorMessage = document.getElementById(field.id + "Error");
+
+            if (errorMessage) {
+                errorMessage.textContent = "";
+            }
+        });
+    });

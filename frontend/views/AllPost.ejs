@@ -1,109 +1,111 @@
 <% layout("/layouts/boilerplate") -%>
 
 <section class="post-page">
-    <form class="d-flex post-search" role="search" action="/post" method="GET">
+    <div class="post-hero">
+        <div>
+            <span class="eyebrow">RENTMATE • PROPERTY DISCOVERY</span>
+            <h1>Find a place that feels like home.</h1>
+            <p>Explore PGs, flats and roommate options that match your needs.</p>
+        </div>
+        <div class="post-hero-badge">Simple search · Real listings</div>
+    </div>
 
-        <input
-            class="form-control"
-            type="search"
-            name="location"
-            placeholder="Search by location..."
-            value="<%= location || '' %>"
-            aria-label="Search"
-        >
-    
-        <select class="form-select" name="type">
-            <option value="" <%= !type ? "selected" : "" %>>All Types</option>
-    
-            <option value="PG" <%= type === "PG" ? "selected" : "" %>>
-                PG
-            </option>
-    
-            <option value="Flat" <%= type === "Flat" ? "selected" : "" %>>
-                Flat
-            </option>
-    
-            <option value="Roommate" <%= type === "Roommate" ? "selected" : "" %>>
-                Roommate
-            </option>
-        </select>
-    
-        <select class="form-select" name="sort">
-            <option value="" <%= !sort ? "selected" : "" %>>
-                Sort By
-            </option>
-    
-            <option value="rent_asc" <%= sort === "rent_asc" ? "selected" : "" %>>
-                Rent: Low to High
-            </option>
-    
-            <option value="rent_desc" <%= sort === "rent_desc" ? "selected" : "" %>>
-                Rent: High to Low
-            </option>
-    
-            <option value="newest" <%= sort === "newest" ? "selected" : "" %>>
-                Newest First
-            </option>
-    
-            <option value="oldest" <%= sort === "oldest" ? "selected" : "" %>>
-                Oldest First
-            </option>
-        </select>
-    
-        <button class="btn btn-primary" type="submit">
-            Search
-        </button>
-        <a href="/post" class="btn btn-outline-secondary">
-            Clear
-        </a>
-    
+    <form class="post-search" role="search" action="/post" method="GET">
+        <div class="search-field search-field-location">
+            <label for="locationSearch">Location</label>
+            <div class="search-input-wrap">
+                <span aria-hidden="true">⌖</span>
+                <input id="locationSearch" class="form-control" type="search" name="location"
+                    placeholder="Search by location..." value="<%= location || '' %>" aria-label="Search">
+            </div>
+        </div>
+
+        <div class="search-field">
+            <label for="typeFilter">Property type</label>
+            <select id="typeFilter" class="form-select" name="type">
+                <option value="" <%= !type ? "selected" : "" %>>All Types</option>
+                <option value="PG" <%= type === "PG" ? "selected" : "" %>>PG</option>
+                <option value="Flat" <%= type === "Flat" ? "selected" : "" %>>Flat</option>
+                <option value="Roommate" <%= type === "Roommate" ? "selected" : "" %>>Roommate</option>
+            </select>
+        </div>
+
+        <div class="search-field">
+            <label for="sortFilter">Sort</label>
+            <select id="sortFilter" class="form-select" name="sort">
+                <option value="" <%= !sort ? "selected" : "" %>>Sort By</option>
+                <option value="rent_asc" <%= sort === "rent_asc" ? "selected" : "" %>>Rent: Low to High</option>
+                <option value="rent_desc" <%= sort === "rent_desc" ? "selected" : "" %>>Rent: High to Low</option>
+                <option value="newest" <%= sort === "newest" ? "selected" : "" %>>Newest First</option>
+                <option value="oldest" <%= sort === "oldest" ? "selected" : "" %>>Oldest First</option>
+            </select>
+        </div>
+
+        <div class="search-actions">
+            <button class="btn btn-primary" type="submit">Search</button>
+            <a href="/post" class="btn btn-light">Clear</a>
+        </div>
     </form>
 </section>
 
-<section class="container pb-4">
+<section class="container pb-5">
+    <div class="results-heading">
+        <div>
+            <span class="eyebrow">AVAILABLE OPTIONS</span>
+            <h2>Explore properties</h2>
+        </div>
+        <span class="results-hint">Choose a listing to see full details.</span>
+    </div>
+
     <div class="row g-4">
         <% if (allPosts.length === 0) { %>
-
-            <div class="col-12 text-center py-5">
-                <h3>No posts found</h3>
-                <p class="text-secondary">
-                    Try changing your location, type, or sorting option.
-                </p>
+            <div class="col-12">
+                <div class="empty-state">
+                    <div class="empty-state-icon">⌂</div>
+                    <h3>No posts found</h3>
+                    <p>Try changing your location, type, or sorting option.</p>
+                    <a href="/post" class="btn btn-primary">View all properties</a>
+                </div>
             </div>
-        
         <% } %>
+
         <% for(let post of allPosts) { %>
             <div class="col-sm-6 col-lg-4">
                 <a href="/post/<%= post._id %>?back=<%= encodeURIComponent(backUrl) %>" class="rm-card-link">
                     <article class="card post-card">
-                        <div id="carousel-<%= post._id %>" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                <% post.images.forEach((image, index) => { %>
-                                    <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                                        <img
-                                            src="<%= image.url %>"
-                                            class="d-block w-100 post-card-image"
-                                            alt="Post image"
-                                        >
-                                    </div>
-                                <% }) %>
-                            </div>
+                        <div class="post-card-media">
+                            <div class="post-card-type"><%= post.PostType %></div>
+                            <div id="carousel-<%= post._id %>" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <% post.images.forEach((image, index) => { %>
+                                        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                                            <img src="<%= image.url %>" class="d-block w-100 post-card-image" alt="Post image">
+                                        </div>
+                                    <% }) %>
+                                </div>
 
-                            <% if (post.images.length > 1) { %>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= post._id %>" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon"></span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= post._id %>" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon"></span>
-                                </button>
-                            <% } %>
+                                <% if (post.images.length > 1) { %>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= post._id %>" data-bs-slide="prev" aria-label="Previous image">
+                                        <span class="carousel-control-prev-icon"></span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= post._id %>" data-bs-slide="next" aria-label="Next image">
+                                        <span class="carousel-control-next-icon"></span>
+                                    </button>
+                                <% } %>
+                            </div>
                         </div>
 
                         <div class="card-body">
-                            <span class="rm-property-type"><%= post.PostType %></span>
-                            <h5 class="card-title"><%= post.Location.adress %></h5>
-                            <p class="card-text">Comfortable rental option in your preferred location.</p>
-                            <div class="rm-price">₹<%= post.Rent %> <span class="fw-normal text-secondary">/ month</span></div>
+                            <h3 class="post-card-title">
+                                <%= post.Title %>
+                            </h3>
+                            <div class="post-card-location">⌖ <%= post.Location.adress %></div>
+                            <h5 class="card-title">Comfortable rental option</h5>
+                            <div class="rm-price">₹<%= post.Rent %> <span>/ month</span></div>
+                            <div class="post-card-footer">
+                                <span>View details</span>
+                                <span class="post-arrow">→</span>
+                            </div>
                         </div>
                     </article>
                 </a>

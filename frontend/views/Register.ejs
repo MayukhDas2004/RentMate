@@ -2,92 +2,42 @@
 
 <div class="auth-container">
     <div class="auth-card">
+        <span class="eyebrow">JOIN RENTMATE</span>
         <h2 class="auth-title">Create your account</h2>
-        <p class="auth-subtitle">Join RentMate and start exploring rental options.</p>
+        <p class="auth-subtitle">Set up your profile and start exploring rental options.</p>
 
         <% if (error && error.length > 0) { %>
             <div class="alert alert-danger alert-dismissible fade show rm-flash mb-4" role="alert">
-                <%= error[0] %>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <%= error[0] %><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <% } %>
 
-        <form action="/register" method="POST">
-            <div class="mb-3">
-                <label for="Name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="Name" name="Name" placeholder="Enter your name" required>
-            </div>
+        <form id="registerForm" action="/register" method="POST">
+            <div class="form-section auth-form-section">
+                <div class="mb-3"><label for="Name" class="form-label">Name</label><input type="text" class="form-control" id="Name" name="Name" placeholder="Enter your name" required><div class="invalid-feedback" id="NameError"></div></div>
+                <div class="mb-3"><label for="Email" class="form-label">Email</label><input type="email" class="form-control" id="Email" name="Email" placeholder="Enter your email" required><div class="invalid-feedback" id="EmailError"></div></div>
+                <div class="row g-3">
+                    <div class="col-md-6"><label for="password" class="form-label">Password</label><input type="password" class="form-control" id="password" name="password" placeholder="Create a password" required><div class="invalid-feedback" id="passwordError"></div></div>
+                    <div class="col-md-6"><label for="confirmPassword" class="form-label">Confirm Password</label><input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required><div class="invalid-feedback" id="confirmPasswordError"></div></div>
+                </div>
+                <div class="mb-3 mt-3"><label for="ContactNumber" class="form-label">Contact Number</label><input type="text" class="form-control" id="ContactNumber" name="ContactNumber" placeholder="10-digit phone number" required><div class="invalid-feedback" id="ContactNumberError"></div></div>
 
-            <div class="mb-3">
-                <label for="Email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="Email" name="Email" placeholder="Enter your email" required>
-            </div>
-
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" required>
+                <div class="otp-row">
+                    <button type="button" id="sendOtpBtn" class="btn btn-light">Send OTP</button>
+                </div>
+                <div class="mb-3"><label for="otp" class="form-label">Enter OTP</label><input type="text" class="form-control" id="otp" placeholder="Enter 6-digit OTP" maxlength="6"></div>
+                <div class="otp-row">
+                    <button type="button" id="verifyOtpBtn" class="btn btn-success">Verify OTP</button>
                 </div>
 
-                <div class="col-md-6">
-                    <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required>
-                </div>
+                <div class="mb-3"><label for="Gender" class="form-label">Gender</label><select class="form-select" id="Gender" name="Gender" required><option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select><div class="invalid-feedback" id="GenderError"></div></div>
+                <div class="mb-3"><label for="Proffetion" class="form-label">Profession</label><input type="text" class="form-control" id="Proffetion" name="Proffetion" placeholder="Enter your profession"><div class="invalid-feedback" id="AboutError"></div></div>
+                <div class="mb-3"><label for="About" class="form-label">About</label><textarea class="form-control" id="About" name="About" rows="3" maxlength="150" placeholder="Tell something about yourself"></textarea></div>
             </div>
-
-            <div class="mb-3 mt-3">
-                <label for="ContactNumber" class="form-label">Contact Number</label>
-                <input type="text" class="form-control" id="ContactNumber" name="ContactNumber" placeholder="Enter contact number" required>
-            </div>
-
-            <button type="button" id="sendOtpBtn" class="btn btn-secondary mb-3">
-                Send OTP
-            </button>
-
-            <div class="mb-3">
-                <label for="otp" class="form-label">Enter OTP</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="otp"
-                    placeholder="Enter 6-digit OTP"
-                    maxlength="6"
-                >
-            </div>
-            
-            <button type="button" id="verifyOtpBtn" class="btn btn-success mb-3">
-                Verify OTP
-            </button>
-
-            <div class="mb-3">
-                <label for="Gender" class="form-label">Gender</label>
-                <select class="form-select" id="Gender" name="Gender" required>
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="Proffetion" class="form-label">Profession</label>
-                <input type="text" class="form-control" id="Proffetion" name="Proffetion" placeholder="Enter your profession">
-            </div>
-
-            <div class="mb-3">
-                <label for="About" class="form-label">About</label>
-                <textarea class="form-control" id="About" name="About" rows="3" maxlength="150" placeholder="Tell something about yourself"></textarea>
-            </div>
-
             <button type="submit" id="registerBtn" class="btn btn-primary auth-submit">Create Account</button>
         </form>
 
-        <div class="auth-switch">
-            Already have an account?
-            <a href="/login">Login</a>
-        </div>
+        <div class="auth-switch">Already have an account? <a href="/login">Login</a></div>
     </div>
 </div>
-
-
 <script src="/js/register.js"></script>

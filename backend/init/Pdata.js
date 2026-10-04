@@ -6,7 +6,7 @@ const data = [
         owner: "66a000000000000000000001",
         Rent: 7000,
 
-        Location: {
+         {
             adress: "Salt Lake, Kolkata",
             url: "https://maps.google.com"
         },
@@ -40,7 +40,7 @@ const data = [
         owner: "66a000000000000000000002",
         Rent: 12000,
 
-        Location: {
+         {
             adress: "New Town, Kolkata",
             url: "https://maps.google.com"
         },
@@ -74,7 +74,7 @@ const data = [
         owner: "66a000000000000000000003",
         Rent: 5500,
 
-        Location: {
+         {
             adress: "Garia, Kolkata",
             url: "https://maps.google.com"
         },
@@ -108,7 +108,7 @@ const data = [
         owner: "66a000000000000000000004",
         Rent: 6500,
 
-        Location: {
+         {
             adress: "Ballygunge, Kolkata",
             url: "https://maps.google.com"
         },
@@ -142,7 +142,7 @@ const data = [
         owner: "66a000000000000000000005",
         Rent: 15000,
 
-        Location: {
+         {
             adress: "Park Street, Kolkata",
             url: "https://maps.google.com"
         },
@@ -176,7 +176,7 @@ const data = [
         owner: "66a000000000000000000001",
         Rent: 8000,
 
-        Location: {
+         {
             adress: "Behala, Kolkata",
             url: "https://maps.google.com"
         },
@@ -210,7 +210,7 @@ const data = [
         owner: "66a000000000000000000002",
         Rent: 6000,
 
-        Location: {
+         {
             adress: "Dum Dum, Kolkata",
             url: "https://maps.google.com"
         },
@@ -244,7 +244,7 @@ const data = [
         owner: "66a000000000000000000003",
         Rent: 10000,
 
-        Location: {
+         {
             adress: "Jadavpur, Kolkata",
             url: "https://maps.google.com"
         },

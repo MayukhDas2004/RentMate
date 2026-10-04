@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#111827">
     <title>RentMate</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/auth.css">
@@ -15,16 +14,10 @@
         <div class="auth-shell">
             <aside class="auth-brand-panel">
                 <div class="auth-brand-content">
-                    <div class="auth-brand-logo">
-                        <span class="auth-brand-mark">RM</span>
-                        <span>RentMate</span>
-                    </div>
-
+                    <div class="auth-brand-logo"><span class="auth-brand-mark">RM</span><span>RentMate</span></div>
+                    <span class="auth-side-kicker">YOUR NEXT PLACE STARTS HERE</span>
                     <h1 class="auth-brand-title">Find a place that feels like home.</h1>
-                    <p class="auth-brand-copy">
-                        Discover PGs, flats and roommates in one simple rental community.
-                    </p>
-
+                    <p class="auth-brand-copy">Discover PGs, flats and roommates in one simple rental community.</p>
                     <ul class="auth-feature-list">
                         <li><span>✓</span> Explore rental posts</li>
                         <li><span>✓</span> Connect through listed contact details</li>
@@ -32,29 +25,15 @@
                     </ul>
                 </div>
             </aside>
-
             <section class="auth-form-panel">
                 <div class="auth-flash-container">
-                    <% if (success && success.length > 0) { %>
-                        <div class="alert alert-success alert-dismissible fade show rm-flash" role="alert">
-                            <%= success[0] %>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <% } %>
-
-                    <% if (error && error.length > 0) { %>
-                        <div class="alert alert-danger alert-dismissible fade show rm-flash" role="alert">
-                            <%= error[0] %>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <% } %>
+                    <% if (success && success.length > 0) { %><div class="alert alert-success alert-dismissible fade show rm-flash" role="alert"><%= success[0] %><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div><% } %>
+                    <% if (error && error.length > 0) { %><div class="alert alert-danger alert-dismissible fade show rm-flash" role="alert"><%= error[0] %><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div><% } %>
                 </div>
-
                 <%- body %>
             </section>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/script.js"></script>
 </body>

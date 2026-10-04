@@ -1,9 +1,11 @@
 const User = require("../models/user.js");
+const post = require("../models/post.js");
 const passport = require("passport");
 const { UserSchema } = require("../schema.js");
 const crypto = require("crypto");
 const transporter = require("../config/mailer.js");
 const twilio = require("../config/twilio.js");
+
 
 module.exports.renderRegisterForm = (req, res) => {
     res.render("Register.ejs");
@@ -23,22 +25,45 @@ module.exports.register = async (req, res) => {
             Proffetion,
             About
         } = req.body;
+
+        // Phone verification check
         if (
             !req.session.phoneVerification ||
             !req.session.phoneVerification.verified ||
             req.session.phoneVerification.phone !== ContactNumber
         ) {
-            req.flash("error", "Please verify your phone number first.");
+            const message = "Please verify your phone number first.";
+
+            if (req.headers.accept && req.headers.accept.includes("application/json")) {
+                return res.status(400).json({
+                    success: false,
+                    field: "ContactNumber",
+                    message: message
+                });
+            }
+
+            req.flash("error", message);
             return res.redirect("/register");
         }
 
+        // Joi validation
         const { error } = UserSchema.validate(req.body);
 
         if (error) {
+
+            if (req.headers.accept && req.headers.accept.includes("application/json")) {
+                return res.status(400).json({
+                    success: false,
+                    field: error.details[0].path[0],
+                    message: error.details[0].message
+                });
+            }
+
             req.flash("error", error.details[0].message);
             return res.redirect("/register");
         }
 
+        // Create email verification token
         const verificationToken = crypto.randomBytes(32).toString("hex");
 
         let newUser = new User({
@@ -52,9 +77,12 @@ module.exports.register = async (req, res) => {
             verificationTokenExpiry: Date.now() + 5 * 60 * 1000
         });
 
+        // Create user
         let registeredUser = await User.register(newUser, password);
 
+        // Send verification email
         const verificationUrl = `http://localhost:3000/verify-email/${verificationToken}`;
+
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: Email,
@@ -63,22 +91,51 @@ module.exports.register = async (req, res) => {
         });
 
         console.log(registeredUser);
-        req.flash("success", "Registration successful! Please First Verify Your Mail !");
-        res.redirect("/login");
 
-    }
-    catch (err) {
-        console.log(err);
-
-        if (err.name === "UserExistsError") {
-            req.flash("error", "This email is already registered.");
-        } else {
-            req.flash("error", "Something went wrong. Please try again.");
+        // AJAX request
+        if (req.headers.accept && req.headers.accept.includes("application/json")) {
+            return res.json({
+                success: true,
+                redirect: "/login"
+            });
         }
 
+        // Normal form request
+        req.flash(
+            "success",
+            "Registration successful! Please First Verify Your Mail !"
+        );
+
+        res.redirect("/login");
+
+    } catch (err) {
+
+        console.log(err);
+
+        let message;
+
+        if (err.name === "UserExistsError") {
+            message = "This email is already registered.";
+        } else if (err.code === 11000 && err.keyPattern?.ContactNumber) {
+            message = "This phone number is already registered.";
+        } else {
+            message = "Something went wrong. Please try again.";
+        }
+
+        // AJAX request
+        if (req.headers.accept && req.headers.accept.includes("application/json")) {
+            return res.status(400).json({
+                success: false,
+                field: err.name === "UserExistsError" ? "Email" : null,
+                message: message
+            });
+        }
+
+        // Normal form request
+        req.flash("error", message);
         res.redirect("/register");
     }
-}
+};
 
 module.exports.sendPhoneOTP = async (req, res) => {
     try {
@@ -211,3 +268,39 @@ module.exports.logout = (req, res, next) => {
         res.redirect("/login");
     });
 }
+
+
+module.exports.deleteAccount = async (req, res) => {
+
+    const userId = req.user._id;
+
+    // Find all posts created by this user
+    const userPosts = await post.find({ owner: userId });
+
+    // Delete all post images from Cloudinary
+    for (let postItem of userPosts) {
+        for (let image of postItem.images) {
+
+            if (image.filename) {
+                await cloudinary.uploader.destroy(image.filename);
+            }
+
+        }
+    }
+
+    // Delete all posts created by this user
+    await post.deleteMany({ owner: userId });
+
+    // Delete the user account
+    await User.findByIdAndDelete(userId);
+
+    // Logout the user
+    req.logout((err) => {
+        if (err) {
+            return res.redirect("/post");
+        }
+
+        req.flash("success", "Your account and posts have been deleted.");
+        res.redirect("/post");
+    });
+};

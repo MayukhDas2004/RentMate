@@ -9,6 +9,7 @@ const { UserSchema } = require("../schema.js");
 const userController = require("../controllers/user.js")
 
 const loginLimiter = require("../middleware/rateLimit.js");
+const { isLoggedIn } = require("../middleware.js");
 
 //Register
 
@@ -49,6 +50,10 @@ router
 
 //LOG OUT
 router.get("/logout", userController.logout);
+
+
+//Delete Account
+router.delete("/delete-account", isLoggedIn, userController.deleteAccount);
 
 
 module.exports = router;

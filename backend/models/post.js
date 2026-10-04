@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 const Schema= mongoose.Schema;
 const PostSchema = new Schema({
 
+    Title: {
+        type: String,
+        required: true,
+        trim: true
+    },
+
     PostType :{
         type:"string",
         required:true

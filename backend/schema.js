@@ -30,6 +30,11 @@ const UserSchema = Joi.object({
 
 
 const PostSchema = Joi.object({
+    Title: Joi.string()
+        .trim()
+        .min(3)
+        .max(100)
+        .required(),
     PostType: Joi.string()
         .valid("PG", "Flat", "Roommate")
         .required(),

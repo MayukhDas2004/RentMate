@@ -1,105 +1,104 @@
 <% layout("/layouts/boilerplate") -%>
 
-<section class="post-form">
-    <h2>Edit Post</h2>
+<section class="form-page">
+    <div class="form-page-heading">
+        <span class="eyebrow">MANAGE LISTING</span>
+        <h1>Edit Post</h1>
+        <p>Update the information or refresh the photos on your property post.</p>
+    </div>
 
-    <form action="/post/<%= Showpost._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="PostType" class="form-label">Post Type</label>
-            <select name="PostType" id="PostType" class="form-select" required>
-                <option value="PG" <%= Showpost.PostType === "PG" ? "selected" : "" %>>PG</option>
-                <option value="Flat" <%= Showpost.PostType === "Flat" ? "selected" : "" %>>Flat</option>
-                <option value="Roommate" <%= Showpost.PostType === "Roommate" ? "selected" : "" %>>Roommate</option>
-            </select>
-        </div>
-
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label for="Rent" class="form-label">Monthly Rent</label>
-                <input type="number" name="Rent" id="Rent" class="form-control" value="<%= Showpost.Rent %>" required>
-            </div>
-
-            <div class="col-md-6">
-                <label for="Deposit" class="form-label">Security Deposit</label>
-                <input type="number" name="Deposit" id="Deposit" class="form-control" value="<%= Showpost.Deposit %>" required>
-            </div>
-        </div>
-
-        <div class="mb-3 mt-3">
-            <label for="adress" class="form-label">Location</label>
-            <input type="text" name="Location[adress]" id="adress" class="form-control" value="<%= Showpost.Location.adress %>" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="locationUrl" class="form-label">Location URL</label>
-            <input type="text" name="Location[url]" id="locationUrl" class="form-control" value="<%= Showpost.Location.url || '' %>">
-        </div>
-
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label for="contactNumber" class="form-label">Contact Number</label>
-                <input type="text" name="contactNumber" id="contactNumber" class="form-control" value="<%= Showpost.contactNumber %>" required>
-            </div>
-
-            <div class="col-md-6">
-                <label for="Email" class="form-label">Email</label>
-                <input type="email" name="Email" id="Email" class="form-control" value="<%= Showpost.Email || '' %>">
-            </div>
-        </div>
-
-        <div class="mb-3 mt-3">
-            <label for="GenderPreferance" class="form-label">Gender Preference</label>
-            <select name="GenderPreferance" id="GenderPreferance" class="form-select" required>
-                <option value="Male" <%= Showpost.GenderPreferance === "Male" ? "selected" : "" %>>Male</option>
-                <option value="Female" <%= Showpost.GenderPreferance === "Female" ? "selected" : "" %>>Female</option>
-                <option value="Any" <%= Showpost.GenderPreferance === "Any" ? "selected" : "" %>>Any</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label d-block">Room Features</label>
-
-            <div class="form-check">
-                <input type="checkbox" name="Description[0][AC]" value="true" class="form-check-input" id="AC" <%= Showpost.Description?.[0]?.AC ? "checked" : "" %>>
-                <label class="form-check-label" for="AC">Air conditioning</label>
-            </div>
-
-            <div class="form-check">
-                <input type="checkbox" name="Description[0][Furnishing]" value="true" class="form-check-input" id="Furnishing" <%= Showpost.Description?.[0]?.Furnishing ? "checked" : "" %>>
-                <label class="form-check-label" for="Furnishing">Furnished</label>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="Rules" class="form-label">Rules</label>
-            <textarea name="Rules" id="Rules" class="form-control" rows="4"><%= Showpost.Rules || "" %></textarea>
-        </div>
-
-        <div class="mb-4">
-            <label class="form-label">Existing Images</label>
-            <div class="row g-3">
-                <% Showpost.images.forEach((image, index) => { %>
-                    <div class="col-sm-6 col-md-4">
-                        <div class="rm-existing-image h-100">
-                            <img src="<%= image.url %>" class="mb-2" alt="Post image">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="deleteImages" value="<%= image.filename %>" id="delete-<%= index %>">
-                                <label class="form-check-label" for="delete-<%= index %>">Delete this image</label>
-                            </div>
-                        </div>
+    <div class="post-form">
+        <form action="/post/<%= Showpost._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+            <div class="form-section">
+                <div class="form-section-heading"><span>01</span><div><h2>Property basics</h2><p>Keep the core listing information accurate.</p></div></div>
+                <div class="mb-3">
+                    <label for="PostType" class="form-label">Post Type</label>
+                    <select name="PostType" id="PostType" class="form-select" required>
+                        <option value="PG" <%= Showpost.PostType === "PG" ? "selected" : "" %>>PG</option>
+                        <option value="Flat" <%= Showpost.PostType === "Flat" ? "selected" : "" %>>Flat</option>
+                        <option value="Roommate" <%= Showpost.PostType === "Roommate" ? "selected" : "" %>>Roommate</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="Title" class="form-label">Post Title</label>
+                    <input
+                        type="text"
+                        name="Title"
+                        id="Title"
+                        class="form-control"
+                        value="<%= Showpost.Title %>"
+                        placeholder="e.g. Spacious 2BHK near College Street"
+                        minlength="3"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="Rent" class="form-label">Monthly Rent</label>
+                        <div class="input-with-prefix"><span>₹</span><input type="number" name="Rent" id="Rent" class="form-control" value="<%= Showpost.Rent %>" required></div>
                     </div>
-                <% }) %>
+                    <div class="col-md-6">
+                        <label for="Deposit" class="form-label">Security Deposit</label>
+                        <div class="input-with-prefix"><span>₹</span><input type="number" name="Deposit" id="Deposit" class="form-control" value="<%= Showpost.Deposit %>" required></div>
+                    </div>
+                </div>
+                <div class="mb-3 mt-3"><label for="adress" class="form-label">Location</label><input type="text" name="Location[adress]" id="adress" class="form-control" value="<%= Showpost.Location.adress %>" required></div>
+                <div class="mb-3"><label for="locationUrl" class="form-label">Location URL</label><input type="text" name="Location[url]" id="locationUrl" class="form-control" value="<%= Showpost.Location.url || '' %>"></div>
             </div>
-        </div>
 
-        <div class="mb-4 rm-upload-box">
-            <label for="images" class="form-label">Add More Images</label>
-            <input type="file" name="images" id="images" class="form-control" accept="image/*" multiple>
-        </div>
+            <div class="form-section">
+                <div class="form-section-heading"><span>02</span><div><h2>Contact & preferences</h2><p>Keep contact details and preferences up to date.</p></div></div>
+                <div class="row g-3">
+                    <div class="col-md-6"><label for="contactNumber" class="form-label">Contact Number</label><input type="text" name="contactNumber" id="contactNumber" class="form-control" value="<%= Showpost.contactNumber %>" required></div>
+                    <div class="col-md-6"><label for="Email" class="form-label">Email</label><input type="email" name="Email" id="Email" class="form-control" value="<%= Showpost.Email || '' %>"></div>
+                </div>
+                <div class="mb-3 mt-3">
+                    <label for="GenderPreferance" class="form-label">Gender Preference</label>
+                    <select name="GenderPreferance" id="GenderPreferance" class="form-select" required>
+                        <option value="Male" <%= Showpost.GenderPreferance === "Male" ? "selected" : "" %>>Male</option>
+                        <option value="Female" <%= Showpost.GenderPreferance === "Female" ? "selected" : "" %>>Female</option>
+                        <option value="Any" <%= Showpost.GenderPreferance === "Any" ? "selected" : "" %>>Any</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label d-block">Room Features</label>
+                    <div class="feature-checks">
+                        <div class="form-check"><input type="checkbox" name="Description[0][AC]" value="true" class="form-check-input" id="AC" <%= Showpost.Description?.[0]?.AC ? "checked" : "" %>><label class="form-check-label" for="AC">Air conditioning</label></div>
+                        <div class="form-check"><input type="checkbox" name="Description[0][Furnishing]" value="true" class="form-check-input" id="Furnishing" <%= Showpost.Description?.[0]?.Furnishing ? "checked" : "" %>><label class="form-check-label" for="Furnishing">Furnished</label></div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="post-actions">
-            <button type="submit" class="btn btn-primary">Update Post</button>
-            <a href="/Profile" class="btn btn-outline-secondary">Cancel</a>
-        </div>
-    </form>
+            <div class="form-section">
+                <div class="form-section-heading"><span>03</span><div><h2>Details & photos</h2><p>Manage rules, existing images and new uploads.</p></div></div>
+                <div class="mb-3"><label for="Rules" class="form-label">Rules</label><textarea name="Rules" id="Rules" class="form-control" rows="4"><%= Showpost.Rules || "" %></textarea></div>
+
+                <div class="mb-4">
+                    <label class="form-label">Existing Images</label>
+                    <div class="row g-3">
+                        <% Showpost.images.forEach((image, index) => { %>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="rm-existing-image h-100">
+                                    <img src="<%= image.url %>" class="mb-2" alt="Post image">
+                                    <div class="form-check"><input type="checkbox" class="form-check-input" name="deleteImages" value="<%= image.filename %>" id="delete-<%= index %>"><label class="form-check-label" for="delete-<%= index %>">Delete this image</label></div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+
+                <div class="mb-4 rm-upload-box">
+                    <label for="images" class="form-label">Add More Images</label>
+                    <input type="file" name="images" id="images" class="form-control" accept="image/*" multiple>
+                    <div class="upload-help"><strong>Add replacement or extra photos</strong><span>Existing images remain unless you select them for deletion.</span></div>
+                </div>
+            </div>
+
+            <div class="post-actions form-submit-actions">
+                <button type="submit" class="btn btn-primary">Update Post</button>
+                <a href="/Profile" class="btn btn-light">Cancel</a>
+            </div>
+        </form>
+    </div>
 </section>

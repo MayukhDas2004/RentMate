@@ -37,7 +37,7 @@ const UserSchema = new mongoose.Schema({
     ContactNumber: {
         type: String,
         required: true,
-        unique: true
+        
     },
 
     Gender: {

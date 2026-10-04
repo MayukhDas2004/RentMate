@@ -1,93 +1,119 @@
 <% layout("/layouts/boilerplate") -%>
 
-<section class="post-form">
-    <h2>Create New Post</h2>
+<section class="form-page">
+    <div class="form-page-heading">
+        <span class="eyebrow">SHARE A PROPERTY</span>
+        <h1>Create New Post</h1>
+        <p>Add the details people need to understand and find your place.</p>
+    </div>
 
-    <form action="/post" method="POST" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="PostType" class="form-label">Post Type</label>
-            <select name="PostType" id="PostType" class="form-select" required>
-                <option value="">Select Type</option>
-                <option value="PG">PG</option>
-                <option value="Flat">Flat</option>
-                <option value="Roommate">Roommate</option>
-            </select>
-        </div>
+    <div class="post-form">
+        <form action="/post" method="POST" enctype="multipart/form-data">
+            <div class="form-section">
+                <div class="form-section-heading"><span>01</span><div><h2>Property basics</h2><p>Start with the type, price and location.</p></div></div>
 
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label for="Rent" class="form-label">Monthly Rent</label>
-                <input type="number" name="Rent" id="Rent" class="form-control" placeholder="Enter rent" required>
+                <div class="mb-3">
+                    <label for="PostType" class="form-label">Post Type</label>
+                    <select name="PostType" id="PostType" class="form-select" required>
+                        <option value="">Select Type</option>
+                        <option value="PG">PG</option>
+                        <option value="Flat">Flat</option>
+                        <option value="Roommate">Roommate</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="Title" class="form-label">Post Title</label>
+                    <input
+                        type="text"
+                        name="Title"
+                        id="Title"
+                        class="form-control"
+                        placeholder="e.g. Spacious 2BHK near College Street"
+                        minlength="3"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="Rent" class="form-label">Monthly Rent</label>
+                        <div class="input-with-prefix"><span>₹</span><input type="number" name="Rent" id="Rent" class="form-control" placeholder="Enter rent" required></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Deposit" class="form-label">Security Deposit</label>
+                        <div class="input-with-prefix"><span>₹</span><input type="number" name="Deposit" id="Deposit" class="form-control" placeholder="Enter deposit" required></div>
+                    </div>
+                </div>
+
+                <div class="mb-3 mt-3">
+                    <label for="adress" class="form-label">Location</label>
+                    <input type="text" name="Location[adress]" id="adress" class="form-control" placeholder="Enter address" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="locationUrl" class="form-label">Location URL</label>
+                    <input type="text" name="Location[url]" id="locationUrl" class="form-control" placeholder="Google Maps URL">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label d-block">Room Features</label>
+                    <div class="feature-checks">
+                        <input type="hidden" name="Description[0][AC]" value="false">
+                        <div class="form-check"><input type="checkbox" name="Description[0][AC]" value="true" class="form-check-input" id="AC"><label class="form-check-label" for="AC">Air conditioning</label></div>
+                        <input type="hidden" name="Description[0][Furnishing]" value="false">
+                        <div class="form-check"><input type="checkbox" name="Description[0][Furnishing]" value="true" class="form-check-input" id="Furnishing"><label class="form-check-label" for="Furnishing">Furnished</label></div>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-6">
-                <label for="Deposit" class="form-label">Security Deposit</label>
-                <input type="number" name="Deposit" id="Deposit" class="form-control" placeholder="Enter deposit" required>
-            </div>
-        </div>
+            <div class="form-section">
+                <div class="form-section-heading"><span>02</span><div><h2>Contact & preferences</h2><p>Help interested people know how to reach you.</p></div></div>
 
-        <div class="mb-3 mt-3">
-            <label for="adress" class="form-label">Location</label>
-            <input type="text" name="Location[adress]" id="adress" class="form-control" placeholder="Enter address" required>
-        </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="contactNumber" class="form-label">Contact Number</label>
+                        <input type="text" name="contactNumber" id="contactNumber" class="form-control" placeholder="Enter contact number" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="email" name="Email" id="Email" class="form-control" placeholder="Enter email">
+                    </div>
+                </div>
 
-        <div class="mb-3">
-            <label for="locationUrl" class="form-label">Location URL</label>
-            <input type="text" name="Location[url]" id="locationUrl" class="form-control" placeholder="Google Maps URL">
-        </div>
+                <div class="mb-3 mt-3">
+                    <label for="GenderPreferance" class="form-label">Gender Preference</label>
+                    <select name="GenderPreferance" id="GenderPreferance" class="form-select" required>
+                        <option value="">Select Preference</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Any">Any</option>
+                    </select>
+                </div>
 
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label for="contactNumber" class="form-label">Contact Number</label>
-                <input type="text" name="contactNumber" id="contactNumber" class="form-control" placeholder="Enter contact number" required>
-            </div>
-
-            <div class="col-md-6">
-                <label for="Email" class="form-label">Email</label>
-                <input type="email" name="Email" id="Email" class="form-control" placeholder="Enter email">
-            </div>
-        </div>
-
-        <div class="mb-3 mt-3">
-            <label for="GenderPreferance" class="form-label">Gender Preference</label>
-            <select name="GenderPreferance" id="GenderPreferance" class="form-select" required>
-                <option value="">Select Preference</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Any">Any</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label d-block">Room Features</label>
-
-            <input type="hidden" name="Description[0][AC]" value="false">
-            <div class="form-check">
-                <input type="checkbox" name="Description[0][AC]" value="true" class="form-check-input" id="AC">
-                <label class="form-check-label" for="AC">Air conditioning</label>
+                
             </div>
 
-            <input type="hidden" name="Description[0][Furnishing]" value="false">
-            <div class="form-check">
-                <input type="checkbox" name="Description[0][Furnishing]" value="true" class="form-check-input" id="Furnishing">
-                <label class="form-check-label" for="Furnishing">Furnished</label>
+            <div class="form-section">
+                <div class="form-section-heading"><span>03</span><div><h2>Details & photos</h2><p>Add rules and clear photos of the property.</p></div></div>
+
+                <div class="mb-3">
+                    <label for="Rules" class="form-label">Rules</label>
+                    <textarea name="Rules" id="Rules" class="form-control" rows="4" placeholder="Enter rules"></textarea>
+                </div>
+
+                <div class="mb-4 rm-upload-box">
+                    <label for="images" class="form-label">Property Images</label>
+                    <input type="file" name="images" id="images" class="form-control" accept="image/*" multiple>
+                    <div class="upload-help"><strong>Upload multiple photos</strong><span>Use clear, well-lit images of the property.</span></div>
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3">
-            <label for="Rules" class="form-label">Rules</label>
-            <textarea name="Rules" id="Rules" class="form-control" rows="4" placeholder="Enter rules"></textarea>
-        </div>
-
-        <div class="mb-4 rm-upload-box">
-            <label for="images" class="form-label">Property Images</label>
-            <input type="file" name="images" id="images" class="form-control" accept="image/*" multiple>
-            <div class="form-text">You can select multiple images.</div>
-        </div>
-
-        <div class="post-actions">
-            <button type="submit" class="btn btn-success">Create Post</button>
-            <a href="/Profile" class="btn btn-outline-secondary">Cancel</a>
-        </div>
-    </form>
+            <div class="post-actions form-submit-actions">
+                <button type="submit" class="btn btn-success">Create Post</button>
+                <a href="/Profile" class="btn btn-light">Cancel</a>
+            </div>
+        </form>
+    </div>
 </section>
