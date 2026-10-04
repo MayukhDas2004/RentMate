@@ -11,6 +11,7 @@
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.0",
     "express-session": "^1.19.0",
+    "googleapis": "^183.0.0",
     "helmet": "^8.3.0",
     "joi": "^18.2.9",
     "method-override": "^3.0.0",

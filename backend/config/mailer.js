@@ -1,5 +1,3 @@
-const { Resend } = require("resend");
+const sendGmail = require("./gmailMailer");
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-module.exports = resend;
+module.exports = sendGmail;

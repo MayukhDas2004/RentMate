@@ -83,20 +83,21 @@ module.exports.register = async (req, res) => {
         // Send verification email
         const verificationUrl = `${process.env.APP_URL}/verify-email/${verificationToken}`;
 
-        const { data, error: resendError } = await transporter.emails.send({
-            from: "onboarding@resend.dev",
+        await transporter({
             to: Email,
             subject: "Verify your RentMate account",
             text: `Please verify your RentMate account by clicking this link: ${verificationUrl}`
         });
         
-        console.log("RESEND DATA:", data);
-        console.log("RESEND ERROR:", resendError);
-
+    
         console.log(registeredUser);
 
         // AJAX request
         if (req.headers.accept && req.headers.accept.includes("application/json")) {
+            req.flash(
+                "success",
+                "Registration successful! Please First Verify Your Mail !"
+            );
             return res.json({
                 success: true,
                 redirect: "/login"
