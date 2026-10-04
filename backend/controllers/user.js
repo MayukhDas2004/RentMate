@@ -83,7 +83,7 @@ module.exports.register = async (req, res) => {
         // Send verification email
         const verificationUrl = `${process.env.APP_URL}/verify-email/${verificationToken}`;
 
-        const { data, error } = await transporter.emails.send({
+        const { data, error: resendError } = await transporter.emails.send({
             from: "onboarding@resend.dev",
             to: "delivered@resend.dev",
             subject: "Verify your RentMate account",
@@ -91,7 +91,7 @@ module.exports.register = async (req, res) => {
         });
         
         console.log("RESEND DATA:", data);
-        console.log("RESEND ERROR:", error);
+        console.log("RESEND ERROR:", resendError);
 
         console.log(registeredUser);
 
