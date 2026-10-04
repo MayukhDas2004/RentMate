@@ -173,6 +173,8 @@ module.exports.verifyPhoneOTP = async (req, res) => {
     try {
         const { ContactNumber, otp } = req.body;
 
+        console.log("PHONE SESSION:", req.session.phoneVerification);
+
         const phoneNumber = `+91${req.session.phoneVerification.phone}`;
 
         const verificationCheck = await twilio.verify.v2
