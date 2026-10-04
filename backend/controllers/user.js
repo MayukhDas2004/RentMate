@@ -81,10 +81,10 @@ module.exports.register = async (req, res) => {
         let registeredUser = await User.register(newUser, password);
 
         // Send verification email
-        const verificationUrl = `http://localhost:3000/verify-email/${verificationToken}`;
+        const verificationUrl = `${process.env.APP_URL}/verify-email/${verificationToken}`;
 
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        await transporter.emails.send({
+            from: "onboarding@resend.dev",
             to: Email,
             subject: "Verify your RentMate account",
             text: `Please verify your RentMate account by clicking this link: ${verificationUrl}`
